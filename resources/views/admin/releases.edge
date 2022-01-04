@@ -1,7 +1,7 @@
 @layout('layouts/admin')
 @section('body')
 <div class="px-4 py-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Все релизы</h1>
+  <h1 class="display-5 fw-bold">Все релизы</h1><br>
   <div class="col-lg-8 mx-auto">
     <table class="table table-striped">
       <thead>
@@ -9,7 +9,6 @@
         <th scope="col">Статус</th>
         <th scope="col">Название</th>
         <th scope="col">Исполнители</th>
-        <th scope="col">Лейбл</th>
         <th scope="col">Дата релиза</th>
         <th scope="col">Действия</th>
       </tr>
@@ -34,7 +33,6 @@
           @else
           <td>{{ item.main_artist }}</td>
           @endif
-          <td>{{ item.label }}</td>
           <td>{{ item.date }}</td>
           <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#release{{ item.id }}">Детали</button></td>
         </tr>
@@ -63,7 +61,8 @@
           <b>UPC: </b>{{ item.upc }}<br>
           <b>ISRC: </b>{{ item.isrc }}<br><br>
           <b>By: </b>{{ item.user_id }}<br><br>
-          <a href="{{ item.link }}" class="btn btn-outline-primary">Скачать</a><br><br>
+          <a href="{{ item.link }}" class="btn btn-outline-primary">Треки</a><br><br>
+          <a href="{{ item.cover }}" class="btn btn-outline-primary" download="{{ item.id }}">Обложка</a><br><br>
           <b>Название:</b> {{ item.name }}<br>
           @if(item.another_artists)
           <b>Артисты:</b> {{ item.main_artist }},{{ item.another_artists }}<br>
@@ -83,7 +82,6 @@
           @endif
           <b>Автор:</b> {{ item.author }}<br>
           <b>Дата релиза:</b> {{ item.date }}<br>
-          <b>Лейбл:</b> {{ item.label }}<br>
           <a href="#" data-bs-toggle="modal" data-bs-target="#upcModal_{{ item.id }}">Принять</a>,
           <a href="#" data-bs-toggle="modal" data-bs-target="#reasonModal_{{ item.id }}">Отклонить</a>,
           <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal_{{ item.id }}">Удалить</a>

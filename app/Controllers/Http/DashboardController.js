@@ -4,6 +4,8 @@ const User = use('App/Models/User')
 const Release = use('App/Models/Release')
 const Database = use('Database')
 const Helpers = use('Helpers')
+const Env = use('Env')
+const axios = require('axios')
 
 class DashboardController {
   async getReleases({ view, auth }) {
@@ -56,6 +58,9 @@ class DashboardController {
 
 
       await release.save()
+      var name = request.input('title')
+      var artist = request.input('main_artist')
+      axios.get(encodeURI(`https://api.telegram.org/bot${Env.get('TELEGRAM_TOKEN')}/sendMessage?chat_id=${Env.get('TELEGRAM_CHAT_ID')}&text=Новый релиз в LKPO:\n\n${artist} - ${name}`))
 
       session.flash({ notification: 'You create new release!' })
 

@@ -23,7 +23,7 @@ class AuthController {
         })
         session.flash({ successmessage: 'User have been created successfully'})
         await auth.attempt(request.input('email'), request.input('password'))
-        return response.route('/dashboard/index');
+        return response.route('/dashboard');
     }
     async logout ({ auth, response }) {
         await auth.logout()

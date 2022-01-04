@@ -1,10 +1,14 @@
 @layout('layouts/main')
 @section('body')
 <div class="px-4 py-5 my-5 text-center">
-  <h1 class="display-5 fw-bold">Создание нового релиза</h1>
+  <h1 class="display-5 fw-bold">Создание нового релиза</h1><br>
   <div class="col-lg-6 mx-auto">
-    <form class="p-5 border rounded-3 bg-light" action="{{ route('newRelease') }}" method="post">
+    <form class="p-5 border rounded-3 bg-light" action="{{ route('newRelease') }}" method="post" enctype="multipart/form-data">
       {{ csrfField() }}
+      <div class="input-group mb-3">
+        <input type="file" class="form-control" id="coverInput" name="cover" accept="image/*" required>
+        <label class="input-group-text" for="coverInput">Обложка</label>
+      </div>
       <div class="form-floating mb-3">
         <input type="text" name="title" class="form-control" id="flotingName" placeholder="Название" required>
         <label for="flotingName">* Название</label>
@@ -49,13 +53,9 @@
         <input type="date" name="date" class="form-control"  id="floatingDate" placeholder="* Дата релиза" required>
         <label for="floatingDate">* Дата релиза</label>
       </div>
-      <div class="form-floating mb-3">
-        <input type="text" name="label" class="form-control"  id="floatingDate" placeholder="* Лейбл" required>
-        <label for="floatingExplicit">* Лейбл</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input type="text" name="link" class="form-control"  id="floatingLink" placeholder="Ссылка на папку в облаке" data-bs-toggle="tooltip" data-bs-placement="right" title="Загрузите трек(и) в формате .wav и обложку альбома в отдельную папку на Яндекс.Диск или любом другом облаке." required>
-        <label for="floatingDate">* Ссылка на папку в облаке</label>
+      <div class="input-group mb-3">
+        <input type="file" class="form-control" id="tracksInput" name="tracks" required>
+        <label class="input-group-text" for="coverInput">Архив с треками</label>
       </div>
       <button class="w-100 btn btn-lg btn-primary" type="submit">Создать</button>
     </form>

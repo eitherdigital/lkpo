@@ -34,40 +34,7 @@ class DashboardController {
 
       return response.redirect('/dashboard/releases')
     }
-    async getInvites({ view, auth }) {
-      const data = await Database.table('users')
-        .where('invited_by', '=', auth.user.id)
-        .orderBy('created_at', 'desc');
-      return view.render('dashboard/invites', { data: data });
-    }
-    async deleteInvite({ params, response, auth }) {
-      if (!params.id) {
-          return response.badRequest('Произошла ошибка, попробуйте позже.');
-      }
-      const user = await User.find(params.id)
-
-      if(!user) return response.redirect('/')
-      console.log(user.invited_by)
-      if (user.invited_by !== String(auth.user.id)) {
-        return response.badRequest('Произошла ошибка, попробуйте позже.');
-      }
-
-      await user.delete();
-      return response.redirect('/dashboard/invites')
-    }
-    async newInvite({ request, session, response, auth }) {
-        const user = await User.create({
-            username: request.input('username'),
-            email: request.input('email'),
-            password: request.input('password'),
-            status: "invited",
-            balance: "0",
-            invited_by: auth.user.id
-        })
-        session.flash({ successmessage: 'User have been created successfully'})
-
-        return response.route('/dashboard/invites');
-    }
+    
     async logout ({ auth, response }) {
         await auth.logout()
         return response.route('/')

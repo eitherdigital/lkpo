@@ -1,0 +1,148 @@
+
+<style>
+#menu__toggle {
+  opacity: 0;
+}
+.menu__btn {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  z-index: 1;
+}
+.menu__btn > span,
+.menu__btn > span::before,
+.menu__btn > span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+}
+.menu__btn > span::before {
+  content: '';
+  top: -8px;
+}
+.menu__btn > span::after {
+  content: '';
+  top: 8px;
+}
+.menu__box {
+  display: block;
+  position: fixed;
+  visibility: hidden;
+  top: 0;
+  left: -100%;
+  width: 300px;
+  height: 100%;
+  margin: 0;
+  padding: 80px 0;
+  list-style: none;
+  text-align: center;
+  background-color: #ECEFF1;
+  box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);
+}
+.menu__item {
+  display: block;
+  padding: 12px 24px;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.menu__item:hover {
+  background-color: #CFD8DC;
+}
+#menu__toggle:checked ~ .menu__btn > span {
+  transform: rotate(45deg);
+}
+#menu__toggle:checked ~ .menu__btn > span::before {
+  top: 0;
+  transform: rotate(0);
+}
+#menu__toggle:checked ~ .menu__btn > span::after {
+  top: 0;
+  transform: rotate(90deg);
+}
+#menu__toggle:checked ~ .menu__box {
+  visibility: visible;
+  left: 0;
+}
+  .b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .form-control-dark {
+    color: #fff;
+    background-color: var(--bs-dark);
+    border-color: var(--bs-gray);
+  }
+  .form-control-dark:focus {
+    color: #fff;
+    background-color: var(--bs-dark);
+    border-color: #fff;
+    box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .text-small {
+    font-size: 85%;
+  }
+
+  .dropdown-toggle {
+    outline: 0;
+  }
+</style>
+<nav class="navbar navbar-dark bg-dark">
+<div class="hamburger-menu">
+  <input id="menu__toggle" type="checkbox" />
+  <label class="menu__btn" for="menu__toggle">
+    <span></span>
+  </label>
+  <ul class="menu__box bg-dark">
+        <!--<img src="/logo.png" width="200">--!>
+        @loggedIn
+        <li><a href="/dashboard" class="menu__item">Главная</a></li>
+        @else
+        <li><a href="/" class="menu__item">Главная</a></li>
+        @endloggedIn
+
+        @loggedIn
+        <li><a href="/dashboard/releases" class="menu__item">Каталог</a></li>
+        <li><a href="/dashboard/releases/new" class="menu__item">Создать релиз</a></li>
+        <li><a href="/dashboard/financial" class="menu__item">Финансы</a></li>
+        @endloggedIn
+  </ul>
+</div>
+      <div class="dropdown">
+        <a class="btn btn-outline-light me-2" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ auth.user.username }} | ID: {{ auth.user.id }}
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          @if(auth.user.status == "admin")
+          <li><a class="dropdown-item" href="/admin">Админ панель</a></li>
+          @endif
+          <li>
+            <form class="" action="{{ route('logout') }}" method="POST" id="logout">
+              {{ csrfField() }}
+              <a class="dropdown-item" href="" onClick="document.getElementById('logout').submit(); return false;">Выйти</a>
+            </form>
+          </li>
+        </ul>
+      </div>
+  </div>
+</nav>

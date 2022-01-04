@@ -1,0 +1,14 @@
+@layout('layouts/main')
+@section('body')
+<div class="container">
+  <h1 class="mt-5">👋 Привет, {{ auth.user.username }}!</h1>
+  <p class="lead">Здесь вы можете управлять контентом.</p>
+  <div>
+    <a href="/dashboard/releases" class="btn btn-lg btn-outline-dark">Каталог</a> <a href="/dashboard/releases/new" class="btn btn-lg btn-outline-dark">Новый релиз</a>
+  </div>
+  <br>
+  <div>
+    <a href="/dashboard/financial" class="btn btn-lg btn-outline-dark">Финансы</a>
+  </div>
+</div>
+@endsection

@@ -1,0 +1,64 @@
+@layout('layouts/main')
+@section('body')
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Создание нового релиза</h1>
+  <div class="col-lg-6 mx-auto">
+    <form class="p-5 border rounded-3 bg-light" action="{{ route('newRelease') }}" method="post">
+      {{ csrfField() }}
+      <div class="form-floating mb-3">
+        <input type="text" name="title" class="form-control" id="flotingName" placeholder="Название" required>
+        <label for="flotingName">* Название</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="main_artist" class="form-control" id="floatingMainArtist" placeholder="Главный исполнитель" required>
+        <label for="floatingMainArtist">* Главный исполнитель</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="another_artists" class="form-control" id="floatingAnotherArtists" placeholder="Дополнительные исполнители" data-bs-toggle="tooltip" data-bs-placement="right" title="Если релиз без доп. исполнителей, то оставьте это поле пустым.">
+        <label for="floatingAnotherArtists">Дополнительные исполнители</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="version" class="form-control" id="floatingVersion" placeholder="Версия" data-bs-toggle="tooltip" data-bs-placement="right" title="Если релиз без версии, то оставьте это поле пустым">
+        <label for="floatingVersion">Версия</label>
+      </div>
+      <div class="form-floating mb-3">
+        <select class="form-select" aria-label="Жанр" name="genre" id="floatingGenre" required>
+          <option value="Хип Хоп" selected>Хип Хоп</option>
+          <option value="Поп">Поп</option>
+          <option value="Рок">Рок</option>
+          <option value="Электроника">Электроника</option>
+          <option value="Танцевальная">Танцевальная</option>
+          <option value="Инструментальная">Инструментальная</option>
+          <option value="Альтернатива">Альтернатива</option>
+          <option value="R&B/Soul">R&B/Soul</option>
+        </select>
+        <label for="floatingGenre">* Жанр</label>
+      </div>
+        <div class="form-floating mb-3">
+        <select class="form-select" aria-label="* Ненормативная лексика" name="explicit" id="floatingExplicit" required>
+          <option value="0" selected>Нет</option>
+          <option value="1">Да</option>
+        </select>
+        <label for="floatingExplicit">* Ненормативная лексика</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="author" class="form-control" id="floatingAuthor" placeholder="* Автор (ФИО)" required>
+        <label for="floatingAuthor">* Автор (ФИО)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="date" name="date" class="form-control"  id="floatingDate" placeholder="* Дата релиза" required>
+        <label for="floatingDate">* Дата релиза</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="label" class="form-control"  id="floatingDate" placeholder="* Лейбл" required>
+        <label for="floatingExplicit">* Лейбл</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" name="link" class="form-control"  id="floatingLink" placeholder="Ссылка на папку в облаке" data-bs-toggle="tooltip" data-bs-placement="right" title="Загрузите трек(и) в формате .wav и обложку альбома в отдельную папку на Яндекс.Диск или любом другом облаке." required>
+        <label for="floatingDate">* Ссылка на папку в облаке</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Создать</button>
+    </form>
+  </div>
+</div>
+@endsection

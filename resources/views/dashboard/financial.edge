@@ -1,0 +1,11 @@
+@layout('layouts/main')
+@section('body')
+<div class="container">
+  <h1 class="mt-5">💸 Ваш баланс - ${{ auth.user.balance }}</h1>
+  @if(auth.user.balance != "0")
+  <p class="lead">Чтобы вывести деньги, напишите вашему менеджеру.</p>
+  @else
+  <p class="lead">Ваш баланс меньше одного доллара, вывод средств недоступен.</p>
+  @endif
+</div>
+@endsection

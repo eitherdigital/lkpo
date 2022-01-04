@@ -1,0 +1,91 @@
+@layout('layouts/admin')
+@section('body')
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Все пользователи</h1>
+  <div class="col-lg-8 mx-auto">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Логин</th>
+        <th scope="col">Email</th>
+        <th scope="col">Статус</th>
+        <th scope="col">Баланс</th>
+        <th scope="col">Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      @each(item in data)
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.username }}</td>
+        <td>{{ item.email }}</td>
+        @if(item.status == "invited")
+        <td>{{ item.status }}({{ item.invited_by }})</td>
+        @else
+        <td>{{ item.status }}</td>
+        @endif
+        <td>{{ item.balance }}</td>
+        <td><a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal_{{ item.id }}">Изменить</a>, <a href="#" data-bs-toggle="modal" data-bs-target="#balanceModal_{{ item.id }}">Изменить баланс</a>, <a href="/api/user/delete/{{ item.id }}">Удалить</a></td>
+      </tr>
+      <div class="modal fade" id="passwordModal_{{ item.id }}" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="passwordLabel">{{ item.username }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="" action="/api/user/edit/{{ item.id }}" method="POST">
+                {{ csrfField() }}
+                <div class="form-floating mb-3">
+                  <input type="text" name="username" class="form-control" id="flotingUsername" placeholder="New login">
+                  <label for="flotingUsername">Новый логин</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" name="email" class="form-control" id="flotingEmail" placeholder="New email">
+                  <label for="flotingPassword">Новый Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input type="text" name="password" class="form-control" id="flotingPassword" placeholder="New password">
+                  <label for="flotingPassword">Новый пароль</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <select class="form-select" aria-label="Статус" name="status" id="floatingStatus" required>
+                    <option value="user" selected>User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <label for="floatingStatus">Статус</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Редактировать</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="balanceModal_{{ item.id }}" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="passwordLabel">{{ item.username }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form class="" action="/api/user/edit/{{ item.id }}" method="POST">
+                {{ csrfField() }}
+                <div class="form-floating mb-3">
+                  <input type="text" name="balance" class="form-control" id="flotingEmail" placeholder="New email">
+                  <label for="flotingPassword">Новый баланс</label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Редактировать</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endsection

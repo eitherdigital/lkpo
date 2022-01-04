@@ -1,0 +1,163 @@
+@layout('layouts/admin')
+@section('body')
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Все релизы</h1>
+  <div class="col-lg-8 mx-auto">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Статус</th>
+        <th scope="col">Название</th>
+        <th scope="col">Исполнители</th>
+        <th scope="col">Лейбл</th>
+        <th scope="col">Дата релиза</th>
+        <th scope="col">Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      @each(item in data)
+      <tr>
+          @if(item.accepted === 1)
+          <td>Принят</td>
+          @elseif(item.accepted === 2)
+          <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.reason }}">Отклонен</td>
+          @else
+          <td>На проверке</td>
+          @endif
+          @if(item.version)
+          <td>{{ item.name }}({{ item.version }})</td>
+          @else
+          <td>{{ item.name }}</td>
+          @endif
+          @if(item.another_artists)
+          <td>{{ item.main_artist }}, {{ item.another_artists }}</td>
+          @else
+          <td>{{ item.main_artist }}</td>
+          @endif
+          <td>{{ item.label }}</td>
+          <td>{{ item.date }}</td>
+          <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#release{{ item.id }}">Детали</button></td>
+        </tr>
+        <div class="modal fade" id="release{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ item.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          @if(item.accepted === 1)
+          <div class="alert alert-success" role="alert">
+            Релиз доставлен на площадки.
+          </div>
+          @elseif(item.accepted === 2)
+          <div class="alert alert-danger" role="alert">
+            Релиз отклонен. Причина: {{ item.reason }}
+          </div>
+          @else
+          <div class="alert alert-warning" role="alert">
+            Релиз на проверке
+          </div>
+          @endif
+          <b>ID: </b>{{ item.id }}<br>
+          <b>UPC: </b>{{ item.upc }}<br>
+          <b>ISRC: </b>{{ item.isrc }}<br><br>
+          <b>By: </b>{{ item.user_id }}<br><br>
+          <a href="{{ item.link }}" class="btn btn-outline-primary">Скачать</a><br><br>
+          <b>Название:</b> {{ item.name }}<br>
+          @if(item.another_artists)
+          <b>Артисты:</b> {{ item.main_artist }},{{ item.another_artists }}<br>
+          @else
+          <b>Артист:</b> {{ item.main_artist }}<br>
+          @endif
+          @if(item.version)
+          <b>Версия:</b> {{ item.version }}<br>
+          @else
+          <b>Версия:</b> None<br>
+          @endif
+          <b>Жанр:</b> {{ item.genre }}<br>
+          @if(item.explicit === 1)
+          <b>Explicit:</b> Да<br>
+          @else
+          <b>Explicit:</b> Нет<br>
+          @endif
+          <b>Автор:</b> {{ item.author }}<br>
+          <b>Дата релиза:</b> {{ item.date }}<br>
+          <b>Лейбл:</b> {{ item.label }}<br>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#upcModal_{{ item.id }}">Принять</a>,
+          <a href="#" data-bs-toggle="modal" data-bs-target="#reasonModal_{{ item.id }}">Отклонить</a>,
+          <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal_{{ item.id }}">Удалить</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal_{{ item.id }}" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteLabel">{{ item.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="" action="/api/release/delete/{{ item.id }}" method="POST">
+                  {{ csrfField() }}
+                  <p>Вы уверены, что хотите удалить релиз?</p>
+                  <button class="w-100 btn btn-lg btn-primary" type="submit">Удалить релиз</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="reasonModal_{{ item.id }}" tabindex="-1" aria-labelledby="reasonModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reasonLabel">{{ item.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="" action="/api/release/decline/{{ item.id }}" method="POST">
+                  {{ csrfField() }}
+                  <div class="form-floating mb-3">
+                    <input type="text" name="reason" class="form-control" id="flotingReason" placeholder="Причина отказа" required>
+                    <label for="flotingReason">Причина отказа</label>
+                  </div>
+                  <button class="w-100 btn btn-lg btn-primary" type="submit">Отменить релиз</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="upcModal_{{ item.id }}" tabindex="-1" aria-labelledby="reasonModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reasonLabel">{{ item.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="" action="/api/release/accept/{{ item.id }}" method="POST">
+                  {{ csrfField() }}
+                  <div class="form-floating mb-3">
+                    <input type="text" name="upc" class="form-control" id="flotingReason" placeholder="UPC" required>
+                    <label for="flotingReason">UPC</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" name="isrc" class="form-control" id="flotingReason" placeholder="ISRC" required>
+                    <label for="flotingReason">ISRC</label>
+                  </div>
+                  <button class="w-100 btn btn-lg btn-primary" type="submit">Принять релиз</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endsection

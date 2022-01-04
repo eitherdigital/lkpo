@@ -1,0 +1,95 @@
+@layout('layouts/main')
+@section('body')
+<div class="px-4 py-5 my-5 text-center">
+  <h1 class="display-5 fw-bold">Мои релизы</h1>
+  <div class="col-lg-8 mx-auto">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Статус</th>
+        <th scope="col">Название</th>
+        <th scope="col">Исполнители</th>
+        <th scope="col">Дата релиза</th>
+        <th scope="col">Действия</th>
+      </tr>
+      </thead>
+      <br>
+      <tbody>
+      @each(item in data)
+      <tr>
+          @if(item.accepted === 1)
+          <td>Принят</td>
+          @elseif(item.accepted === 2)
+          <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{ item.reason }}">Отклонен</td>
+          @else
+          <td>На проверке</td>
+          @endif
+          @if(item.version)
+          <td>{{ item.name }}({{ item.version }})</td>
+          @else
+          <td>{{ item.name }}</td>
+          @endif
+          @if(item.another_artists)
+          <td>{{ item.main_artist }}, {{ item.another_artists }}</td>
+          @else
+          <td>{{ item.main_artist }}</td>
+          @endif
+          <td>{{ item.date }}</td>
+          <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#release{{ item.id }}">Детали</button></td>
+        </tr>
+        <div class="modal fade" id="release{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ item.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          @if(item.accepted === 1)
+          <div class="alert alert-success" role="alert">
+            Релиз доставлен на площадки.
+          </div>
+          @elseif(item.accepted === 2)
+          <div class="alert alert-danger" role="alert">
+            Релиз отклонен. Причина: {{ item.reason }}
+          </div>
+          @else
+          <div class="alert alert-warning" role="alert">
+            Релиз на проверке
+          </div>
+          @endif
+          <b>ID: </b>{{ item.id }}<br>
+          <b>UPC: </b>{{ item.upc }}<br>
+          <b>ISRC: </b>{{ item.isrc }}<br>
+          <b>Название:</b> {{ item.name }}<br>
+          @if(item.another_artists)
+          <b>Артисты:</b> {{ item.main_artist }},{{ item.another_artists }}<br>
+          @else
+          <b>Артист:</b> {{ item.main_artist }}<br>
+          @endif
+          @if(item.version)
+          <b>Версия:</b> {{ item.version }}<br>
+          @else
+          <b>Версия:</b> None<br>
+          @endif
+          <b>Жанр:</b> {{ item.genre }}<br>
+          @if(item.explicit === 1)
+          <b>Explicit:</b> Да<br>
+          @else
+          <b>Explicit:</b> Нет<br>
+          @endif
+          <b>Автор:</b> {{ item.author }}<br>
+          <b>Дата релиза:</b> {{ item.date }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+      @endeach
+      </tbody>
+    </table>
+  </div>
+</div>
+@endsection

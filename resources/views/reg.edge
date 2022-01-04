@@ -1,0 +1,19 @@
+@layout('layouts/main')
+@section('body')
+<form class="p-3" action="{{ route('reg') }}" method="post">
+{{ csrfField() }}
+  <div class="form-floating mb-3">
+    <input type="text" name="username" class="form-control" id="flotingLogin" placeholder="Логин" required>
+    <label for="flotingLogin">Логин</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="email" name="email" class="form-control" id="flotingLogin" placeholder="Email" required>
+    <label for="flotingLogin">Email</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль" required>
+    <label for="flotingLogin">Пароль</label>
+  </div>
+  <input class="w-100 btn btn-lg btn-outline-primary" type="submit" name="btn_login" value="Войти">
+</form>
+@endsection
